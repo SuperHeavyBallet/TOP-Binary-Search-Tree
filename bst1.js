@@ -90,6 +90,77 @@ class Tree
 const unsortedArray =  [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const tree = new Tree(unsortedArray);
 
-console.log(tree.root);
+const numberToInsert = 6;
+
+function traverseTreeToInsert(currentNode, insertNumber, previousNode)
+{
+
+    if (currentNode)
+    {
+        console.log(`Current: ${currentNode.value}`);
+        console.log(`Insert: ${insertNumber}`);
+
+        if (currentNode.value === insertNumber)
+        {
+            console.log("++ Already in the tree ++");
+            return;
+        }
+
+        if (currentNode.value < insertNumber)
+        {
+            console.log(">> Go Right >>");
+            console.log(currentNode);
+            traverseTreeToInsert(currentNode.right, insertNumber, currentNode);
+        }
+        else if (currentNode.value > insertNumber)
+        {
+            console.log("<< Go Left <<");
+            console.log(currentNode);
+            traverseTreeToInsert(currentNode.left, insertNumber, currentNode);
+        }
+    }
+    else{
+        console.log("!! Empty Node !!");
+
+        if (!currentNode)
+        {
+
+            if (previousNode.value < insertNumber)
+            {
+                const newNode = new Node(insertNumber);
+                previousNode.right = newNode;
+                console.log(`New Node: ${previousNode.right.value}`);
+            }
+
+            else if (previousNode.value > insertNumber)
+            {
+                const newNode = new Node(insertNumber);
+                previousNode.left = newNode;
+                console.log(`New Node: ${previousNode.left.value}`);
+            }
+            
+        }
+
+    }
+
+    
+
+}
+
+function preOrder(node, nodeName)
+{
+    if (node == null)
+    {
+        return;
+    }
+    console.log(`${nodeName}: `, node.value);
+    preOrder(node.left, "Left Child");
+    preOrder(node.right, "Right Child");
+}
+preOrder(tree.root, "Root Node");
+traverseTreeToInsert(tree.root, numberToInsert);
+preOrder(tree.root, "Root Node");
+
+
 
 
