@@ -1,3 +1,10 @@
+const body = document.getElementById("body");
+
+const displayText = document.createElement("h1");
+
+displayText.textContent = "Hello World!";
+body.appendChild(displayText);
+
 class Node
 {
     constructor(value, left, right)
@@ -14,6 +21,42 @@ class Tree
     constructor(array)
     {
         this.root = this.buildTree(this.removeDuplicates(array), 0, array.length - 1);
+    }
+
+    display(currentNode, previousNode, direction)
+    {
+        const thisNode = currentNode;
+        const lastNode = previousNode;
+
+        if (thisNode)
+        {
+            const newDOMNode = document.createElement("h3");
+            const prevDOMNode = document.createElement("h4");
+
+            newDOMNode.textContent = `${direction} :  ${currentNode.value}`;
+            prevDOMNode.textContent = `Parent : ${lastNode.value}`;
+            
+            body.appendChild(newDOMNode);
+            body.appendChild(prevDOMNode);
+
+            if (thisNode.left && thisNode.left.value != undefined)
+            {
+                this.display(thisNode.left, thisNode, "Left");
+            }
+
+            if (thisNode.right && thisNode.right.value != undefined)
+            {
+                this.display(thisNode.right, thisNode, "Right");
+            }
+
+            return;
+
+        }
+        else
+        {
+            return;
+        }
+
     }
 
     removeDuplicates(inputArray)
@@ -83,16 +126,41 @@ class Tree
 
     }
 
+    getTreeHeight(){
+        let lengthToLeft = 0;
+        let lengthToRight = 0;
+        let pointerToLeft = this.root.left;
+        let pointerToRight = this.root.right;
+        while (pointerToLeft != null)
+        {
+            ++lengthToLeft;
+            pointerToLeft = pointerToLeft.left;
+        }
+        while (pointerToRight != null)
+        {
+            ++lengthToRight;
+            pointerToRight = pointerToRight.right;
+        }
+        const length = lengthToRight > lengthToLeft ?
+            lengthToRight : lengthToLeft;
+
+            // add 1 for the root
+            return length + 1;
+    }
+
+
+
 
 }
 
 
 const unsortedArray =  [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+
 const tree = new Tree(unsortedArray);
 
 const numberToInsert = 6;
 
-function traverseTreeToInsert(currentNode, insertNumber, previousNode)
+function traverseTreeToInsert( currentNode, insertNumber, previousNode)
 {
 
     if (currentNode)
@@ -147,6 +215,59 @@ function traverseTreeToInsert(currentNode, insertNumber, previousNode)
 
 }
 
+function traverseTreeToDelete(currentNode, deleteNumber, previousNode)
+{
+
+    if (currentNode)
+    {
+        console.log(`Current: ${currentNode.value}`);
+        console.log(`Insert: ${deleteNumber}`);
+
+        if (currentNode.value === deleteNumber)
+        {
+            console.log("++ Already in the tree ++");
+            return;
+        }
+
+        if (currentNode.value < deleteNumber)
+        {
+            console.log(">> Go Right >>");
+            console.log(currentNode);
+            traverseTreeToInsert(currentNode.right, deleteNumber, currentNode);
+        }
+        else if (currentNode.value > deleteNumber)
+        {
+            console.log("<< Go Left <<");
+            console.log(currentNode);
+            traverseTreeToInsert(currentNode.left, deleteNumber, currentNode);
+        }
+    }
+    else{
+        console.log("!! Empty Node !!");
+
+        if (!currentNode)
+        {
+
+            if (previousNode.value < deleteNumber)
+            {
+                const newNode = new Node(deleteNumber);
+                previousNode.right = newNode;
+                console.log(`New Node: ${previousNode.right.value}`);
+            }
+
+            else if (previousNode.value > deleteNumber)
+            {
+                const newNode = new Node(deleteNumber);
+                previousNode.left = newNode;
+                console.log(`New Node: ${previousNode.left.value}`);
+            }
+            
+        }
+
+    }
+
+}
+
 function preOrder(node, nodeName)
 {
     if (node == null)
@@ -157,10 +278,13 @@ function preOrder(node, nodeName)
     preOrder(node.left, "Left Child");
     preOrder(node.right, "Right Child");
 }
-preOrder(tree.root, "Root Node");
-traverseTreeToInsert(tree.root, numberToInsert);
-preOrder(tree.root, "Root Node");
 
+const numberToDelete = 7;
+
+
+
+tree.display(tree.root, 0, "Root");
+console.log(tree.getTreeHeight());
 
 
 
