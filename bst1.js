@@ -167,24 +167,27 @@ class Tree
     // Method to pass through each tree node until a suitable position is found to place the number chosen
     traverseTreeToInsert( currentNode, insertNumber, previousNode)
     {
-
+        // Check if current node input via argument exists
         if (currentNode)
         {
             console.log(`Current: ${currentNode.value}`);
             console.log(`Insert: ${insertNumber}`);
 
+            // If the value of this currend node is equal to the number we are trying to insert, then return that the number is already present
             if (currentNode.value === insertNumber)
             {
                 console.log("++ Already in the tree ++");
                 return;
             }
 
+            // If the value of this current node is less than the value of the number to insert, move to the right side child and repeat this process
             if (currentNode.value < insertNumber)
             {
                 console.log(">> Go Right >>");
                 console.log(currentNode);
                 this.traverseTreeToInsert(currentNode.right, insertNumber, currentNode);
             }
+            // Or if the value of this current node is greater than the value of the number to insert, move to the left sild child and repeat this process
             else if (currentNode.value > insertNumber)
             {
                 console.log("<< Go Left <<");
@@ -192,19 +195,21 @@ class Tree
                 this.traverseTreeToInsert(currentNode.left, insertNumber, currentNode);
             }
         }
+        // Else, if the process arrives at an empty position and none of the prior values were equal, then we can insert the number here
         else{
             console.log("!! Empty Node !!");
 
+            // Double check to make sure that this position is in fact empty, ie there is not a current node at this position
             if (!currentNode)
             {
-
+                // If the parent node's value is less than the number to insert, then this node will be assigned as the right side child, with the value to insert
                 if (previousNode.value < insertNumber)
                 {
                     const newNode = new Node(insertNumber);
                     previousNode.right = newNode;
                     console.log(`New Node: ${previousNode.right.value}`);
                 }
-
+                // Or if the parent node's value is greater than the number to insert, then this node will be assiged as the left side child, with the value to insert
                 else if (previousNode.value > insertNumber)
                 {
                     const newNode = new Node(insertNumber);
