@@ -12,6 +12,7 @@ class Node
         this.value = value;
         this.left = left;
         this.right = right;
+        
     }
     /*
     Each Node is:
@@ -31,9 +32,16 @@ class Tree
     {
         this.elementCounter = 0;
         this.root = this.buildTree(this.removeDuplicates(array), 0, array.length - 1);
+        this.nodeDepth = 0;
+        this.nodeLeft = 0;
+        this.nodeRight = 0;
         
     }
 
+    clearOldDisplay()
+    {
+        delete(body.childNodes);        
+    }
 
 
     // Recursive Method to output the Tree Nodes/Values into an HTML DOM
@@ -181,7 +189,7 @@ class Tree
             }
 
             // If the value of this current node is less than the value of the number to insert, move to the right side child and repeat this process
-            if (currentNode.value < insertNumber)
+            else if (currentNode.value < insertNumber)
             {
                 console.log(">> Go Right >>");
                 console.log(currentNode);
@@ -221,72 +229,108 @@ class Tree
 
         }
 
-        this.display(tree.root, 0, "Root");
+        
 
         
 
     }
 
-}
-
-
-
-
-
-
-
-function traverseTreeToDelete(currentNode, deleteNumber, previousNode)
-{
-
-    if (currentNode)
+    traverseTreeToDelete(currentNode, numberToDelete, previousNode)
     {
-        console.log(`Current: ${currentNode.value}`);
-        console.log(`Insert: ${deleteNumber}`);
+        if (currentNode)
+        {
+            console.log(`Current: ${currentNode.value}`);
+            console.log(`Delete: ${numberToDelete}`);
+            console.log(" ");
 
-        if (currentNode.value === deleteNumber)
-        {
-            console.log("++ Already in the tree ++");
-            return;
-        }
+            if (currentNode.value === numberToDelete)
+            {
+                console.log("Found the number to delete")
+                return
+            }
 
-        if (currentNode.value < deleteNumber)
-        {
-            console.log(">> Go Right >>");
-            console.log(currentNode);
-            traverseTreeToDelete(currentNode.right, deleteNumber, currentNode);
+            else if (currentNode.value < numberToDelete)
+            {
+                this.traverseTreeToDelete(currentNode.right, numberToDelete, currentNode);
+            }
+
+            else if (currentNode.value > numberToDelete)
+            {
+                this.traverseTreeToDelete(currentNode.left, numberToDelete, currentNode);
+            }
+
         }
-        else if (currentNode.value > deleteNumber)
+        else
         {
-            console.log("<< Go Left <<");
-            console.log(currentNode);
-            traverseTreeToDelete(currentNode.left, deleteNumber, currentNode);
+            console.log("!! Empty Node!!");
         }
     }
-    else{
-        console.log("!! Empty Node !!");
 
-        if (!currentNode)
+    logNodePosition(currentNode, previousNode, direction)
+    {
+        if (currentNode)
+        {
+            console.log(`Node Value: ${currentNode.value}, Position: ${direction}`);
+
+            if (currentNode.left)
+            {
+                this.logNodePosition(currentNode.left, currentNode, "Left");
+            }
+
+            if (currentNode.right)
+            {
+                this.logNodePosition(currentNode.right, currentNode, "Right");
+            }
+        }
+    }
+
+    traverseTreeToFind(currentNode, numberToFind, previousNode)
+    {
+
+        
+        if (currentNode)
+        {
+            if (currentNode.value === numberToFind)
+            {
+                console.log(`${numberToFind} is at ${currentNode}`, this.nodeDepth);
+                return;
+            }
+
+            else if (currentNode.value < numberToFind)
+            {
+                this.nodeDepth ++;
+                this.nodeRight ++;
+                console.log(">> Go Right >>");
+                console.log(currentNode);
+                
+                this.traverseTreeToFind(currentNode.right, numberToFind, currentNode);
+            }
+
+            else if (currentNode.value > numberToFind)
+            {
+                this.nodeDepth ++;
+                this.nodeLeftt ++;
+                console.log(">> Go Left >>");
+                console.log(currentNode);
+                this.traverseTreeToFind(currentNode.left, numberToFind, currentNode);
+            }
+        }
+        else
         {
 
-            if (previousNode.value < deleteNumber)
-            {
-                const newNode = new Node(deleteNumber);
-                previousNode.right = newNode;
-                console.log(`New Node: ${previousNode.right.value}`);
-            }
-
-            else if (previousNode.value > deleteNumber)
-            {
-                const newNode = new Node(deleteNumber);
-                previousNode.left = newNode;
-                console.log(`New Node: ${previousNode.left.value}`);
-            }
-            
+            console.log("Empty Node, number not found");
         }
-
     }
 
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -294,14 +338,23 @@ const unsortedArray =  [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 72, 46,
 
 
 const tree = new Tree(unsortedArray);
-console.log(tree.removeDuplicates(unsortedArray));
+//console.log(tree.removeDuplicates(unsortedArray));
 tree.display(tree.root, 0, "Root");
 
-const numberToInsert = 6;
+const numberToInsert = 8;
 
 const numberToDelete = 7;
 
+tree.clearOldDisplay();
+
 //tree.traverseTreeToInsert(tree.root, numberToInsert);
+
+const findNumber = 67;
+//tree.traverseTreeToFind(tree.root, findNumber);
+
+//tree.logNodePosition(tree.root, null, "Root");
+
+tree.traverseTreeToDelete(tree.root, 23);
 
 
 
