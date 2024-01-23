@@ -105,3 +105,42 @@ root = sortedArrayToBST(sortedArray, 0, n-1);
 
 console.log("Preorder traversal of constructed BST");
 preOrder(root);
+
+
+
+
+
+
+
+
+
+
+traverseTreeToDelete(currentNode, numberToDelete, previousNode)
+{
+    if (currentNode)
+    {
+        console.log(`Current: ${currentNode.value}`);
+        console.log(`Insert: ${numberToDelete}`);
+
+        if (currentNode.value === numberToDelete)
+        {
+            console.log("Found the number to delete")
+            return
+        }
+
+        else if (currentNode.value < numberToDelete)
+        {
+            this.traverseTreeToDelete(currentNode.right, numberToDelete, currentNode);
+        }
+
+        else if (currentNode.value > numberToDelete)
+        {
+            this.traverseTreeToDelete(currentNode.left, numberToDelete, currentNode);
+        }
+
+    }
+    else
+    {
+        console.log("!! Empty Node!!");
+    }
+}

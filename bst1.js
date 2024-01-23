@@ -35,6 +35,8 @@ class Tree
         this.nodeDepth = 0;
         this.nodeLeft = 0;
         this.nodeRight = 0;
+        this.nodesLeftOfRoot = 0;
+        this.nodesRightOfRoot = 0;
         
     }
 
@@ -246,7 +248,18 @@ class Tree
             if (currentNode.value === numberToDelete)
             {
                 console.log("Found the number to delete")
-                return
+                
+                if (currentNode.left)
+                {
+                    console.log("Node has a left child");
+                    console.log(`Right Child: ${currentNode.left.value}`);
+                }
+
+                if (currentNode.right)
+                {
+                    console.log("Node has a right child");
+                    console.log(`Right Child: ${currentNode.right.value}`);
+                }
             }
 
             else if (currentNode.value < numberToDelete)
@@ -266,11 +279,22 @@ class Tree
         }
     }
 
+    deleteNode(value)
+    {
+        //this.root
+    }
+
     logNodePosition(currentNode, previousNode, direction)
     {
         if (currentNode)
         {
+            if (previousNode)
+            {
+                console.log(`Parent Node: ${previousNode, previousNode.value}`);
+            }
+            
             console.log(`Node Value: ${currentNode.value}, Position: ${direction}`);
+            console.log(" ");
 
             if (currentNode.left)
             {
@@ -322,6 +346,39 @@ class Tree
         }
     }
 
+    isBalanced(rootNode)
+    {
+
+        const root = rootNode;
+      
+
+        this.traverseTree(root, nodesLeftOfRoot, nodesRightOfRoot);
+        console.log(this.nodesLeftOfRoot);
+        console.log(this.nodesRightOfRoot);
+        
+    }
+
+    traverseTree(currentNode, nodesLeftOfRoot, nodesRightOfRoot)
+    {
+        if (currentNode)
+        {
+
+            if (currentNode.left.value)
+            {
+                this.nodesLeftOfRoot++;
+                this.traverseTree(currentNode.left, nodesLeftOfRoot, nodesRightOfRoot);
+            }
+
+            if (currentNode.right.value)
+            {
+                this.nodesRightOfRoot++;
+                this.traverseTree(currentNode.right, nodesLeftOfRoot, nodesRightOfRoot);
+            }
+
+        }
+
+    }
+
 }
 
 
@@ -354,7 +411,9 @@ const findNumber = 67;
 
 //tree.logNodePosition(tree.root, null, "Root");
 
-tree.traverseTreeToDelete(tree.root, 23);
+//tree.traverseTreeToDelete(tree.root, 324);
+
+tree.isBalanced(tree.root);
 
 
 
