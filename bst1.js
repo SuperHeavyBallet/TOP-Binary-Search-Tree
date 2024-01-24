@@ -346,39 +346,29 @@ class Tree
         }
     }
 
-    isBalanced(rootNode)
-    {
+    countChildrenNodes(){
+        const leftCount = this.countNodesRecursive(this.root.left);
+        const rightCount = this.countNodesRecursive(this.root.right);
 
-        const root = rootNode;
-      
-
-        this.traverseTree(root, nodesLeftOfRoot, nodesRightOfRoot);
-        console.log(this.nodesLeftOfRoot);
-        console.log(this.nodesRightOfRoot);
-        
+        console.log(`Left: ${leftCount}`);
+        console.log(`Right: ${rightCount}`);
     }
 
-    traverseTree(currentNode, nodesLeftOfRoot, nodesRightOfRoot)
+    countNodesRecursive(currentNode)
     {
-        if (currentNode)
+        if (currentNode === null)
         {
-
-            if (currentNode.left.value)
-            {
-                this.nodesLeftOfRoot++;
-                this.traverseTree(currentNode.left, nodesLeftOfRoot, nodesRightOfRoot);
-            }
-
-            if (currentNode.right.value)
-            {
-                this.nodesRightOfRoot++;
-                this.traverseTree(currentNode.right, nodesLeftOfRoot, nodesRightOfRoot);
-            }
-
+            return 0;
         }
 
+        const leftCount = this.countNodesRecursive(currentNode.left);
+        const rightCount = this.countNodesRecursive(currentNode.right);
+
+        return leftCount + rightCount + 1;
+
     }
 
+    
 }
 
 
@@ -413,7 +403,7 @@ const findNumber = 67;
 
 //tree.traverseTreeToDelete(tree.root, 324);
 
-tree.isBalanced(tree.root);
+tree.countChildrenNodes();
 
 
 
