@@ -17,27 +17,34 @@
 
         <div class="input-area" id="input-area">
             <div class="input">
-            <label for="input-1">1.</label>
-            <input id="input-1" class="option" type="text" placeholder="Choose something...">
+                <label for="input-1">1.</label>
+                <input id="input-1" class="option" type="text" placeholder="Choose something...">
+                    <div class="remove-option" id="remove-1">
+                        <h5>Remove</h5>
+                    </div>
             </div>
             <div class="input">
             <label for="input-2">2.</label>
             <input id="input-2" class="option" type="text" placeholder="Choose something...">
+            <div class="remove-option" id="remove-2">
+                <h5>Remove</h5>
+            </div>
         </div>
 
         </div>
 
-        <div>
+        <div class="buttons">
             <button id="add-option">Add Another</button>
+            <button id="clear-button">Clear All</button>
 
             <button id="choose-button">Choose!</button>
 
-            <button id="clear-button">Clear</button>
+            
         </div>
 
         <div class="result-container">
             <h3>Result:</h3>
-            <h4 id="result-text">Option 1</h4>
+            <h2 id="result-text">Option 1</h4>
         </div>
 
     </div>
