@@ -18,7 +18,25 @@ class Node
     }
 }
 
-function sortedArrayToBST(inputArray)
+class Tree{
+
+    constructor(inputArray)
+    {
+        this.sortedArray = sortArray(inputArray);
+        this.root = buildTree(this.sortedArray);
+    }
+}
+
+function sortArray(inputArray)
+{
+    const originalArray = inputArray;
+    const uniqueSet = new Set(originalArray);
+    const sortedUniqueArray = [...uniqueSet].sort((a,b) => a - b);
+
+    return sortedUniqueArray;
+}
+
+function buildTree(inputArray)
 {
     // If the input array is empty, return null
     if (inputArray.length === 0)
@@ -30,10 +48,14 @@ function sortedArrayToBST(inputArray)
     const root = new Node(inputArray[mid]);
 
     // Initialising Queue
+    // q is an array containing arrays at each element
+    // element 0 q[0] contains: root, and an array of 0 and mid -1
+    // element 1 q[1] contains: root, and an array of mid+1 and the length of the input array -1
     const q = [
         [root, [0, mid - 1]],
         [root, [mid + 1, inputArray.length -1]]
     ];
+
 
     while (q.length > 0)
     {
@@ -75,7 +97,22 @@ function printBST(root)
     printBST(root.right);
 }
 
+
+    const prettyPrint = (node, prefix = "", isLeft = true) => {
+        if (node === null) {
+          return;
+        }
+        if (node.right !== null) {
+          prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
+        }
+        console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.val}`);
+        if (node.left !== null) {
+          prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
+        }
+      };
+      
 // Driver program to test the above function
-const sortedArray = [1,2,3,4,5,6,7];
-const root = sortedArrayToBST(sortedArray);
-printBST(root);
+const unsortedArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+const tree = new Tree(unsortedArray);
+//printBST(tree.root);
+prettyPrint(tree.root);
