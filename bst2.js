@@ -85,6 +85,42 @@ function buildTree(inputArray)
     return root;    
 }
 
+function traverseTreeToFind(currentNode, findNumber)
+{
+    if (currentNode === null)
+    {
+        console.log("Number Not In Tree");
+        return false;
+    }
+
+    
+
+    else
+    {
+        console.log("Current Node: ", currentNode.val);
+
+        if (currentNode.val === findNumber)
+        {
+            console.log("Found Matching Node!");
+            return true;
+        }
+        else
+        {
+            if (currentNode.val < findNumber)
+            {
+                console.log(">> Go Right >>");
+                return traverseTreeToFind(currentNode.right, findNumber);
+            }
+            else if (currentNode.val > findNumber)
+            {
+                console.log("<< Go Left <<");
+                return traverseTreeToFind(currentNode.left, findNumber);
+            }
+        }
+    }
+
+}
+
 function printBST(root)
 {
     if (root === null)
@@ -115,4 +151,71 @@ function printBST(root)
 const unsortedArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const tree = new Tree(unsortedArray);
 //printBST(tree.root);
+prettyPrint(tree.root);
+
+
+function findNumberInTree(treeToSearch, numberToFind)
+{
+    const found = traverseTreeToFind(treeToSearch, numberToFind);
+    if (found)
+    {
+
+        return console.log(`Node with value ${numberToFind} found in tree.`);
+    }
+    else
+    {
+        return console.log(`Node with value ${numberToFind} not found in tree.`);
+    }
+}
+const numberToFind = 68;
+//findNumberInTree(tree.root, numberToFind);
+
+function traverseTreeToInsert(currentNode, insertNumber, previousNode)
+{
+    if (currentNode === null)
+    {
+        console.log("Found Empty Spot To Place Value");
+        const newNode = new Node(insertNumber);
+        if (previousNode.val < insertNumber)
+        {
+            previousNode.right = newNode;
+            console.log(previousNode.right.val);
+        }
+        else if (previousNode.val > insertNumber)
+        {
+            previousNode.left = newNode;
+            console.log(previousNode.left.val);
+        }
+        return 
+    }
+    else
+    {
+        if (currentNode.val === insertNumber)
+        {
+            console.log(`${insertNumber} is already in the tree`);
+        }
+
+        else if (currentNode.val < insertNumber)
+        {
+            console.log(">> Go Right >>");
+            traverseTreeToInsert(currentNode.right, insertNumber, currentNode);
+        }
+        else if (currentNode.val > insertNumber)
+        {
+            console.log("<< Go Left <<");
+            traverseTreeToInsert(currentNode.left, insertNumber, currentNode);
+        }
+    }
+}
+
+
+traverseTreeToInsert(tree.root, 69);
+prettyPrint(tree.root);
+traverseTreeToInsert(tree.root, 362);
+prettyPrint(tree.root);
+traverseTreeToInsert(tree.root, 8);
+prettyPrint(tree.root);
+traverseTreeToInsert(tree.root, 2);
+prettyPrint(tree.root);
+traverseTreeToInsert(tree.root, 0);
 prettyPrint(tree.root);
