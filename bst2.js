@@ -148,7 +148,7 @@ function printBST(root)
       };
       
 // Driver program to test the above function
-const unsortedArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+const unsortedArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 72, 89, 54, 1560, 2, 4, 5];
 const tree = new Tree(unsortedArray);
 //printBST(tree.root);
 prettyPrint(tree.root);
@@ -208,14 +208,69 @@ function traverseTreeToInsert(currentNode, insertNumber, previousNode)
     }
 }
 
+function traverseTreeToDelete(currentNode, deleteNumber, previousNode)
+{
+    if (currentNode === null)
+    {
+        return null;
+    }
+    else
+    {
+        if (currentNode.val === deleteNumber)
+        {
+
+            // First case, lead with no children
+            if (currentNode.left === null && currentNode.right === null)
+            {
+                console.log(`Found Leaf Node ${deleteNumber}`);
+
+                if (previousNode.val < deleteNumber)
+                {
+                    previousNode.right = null;
+                    return;
+                }
+                else if (previousNode.val > deleteNumber)
+                {
+                    previousNode.left = null;
+                    return;
+
+                }
+            }
+            // Second case, has one child
+            else if (currentNode.left !== null && currentNode.right === null)
+            {
+                console.log(`Found Node ${deleteNumber} with Left Child`);
+                previousNode.right = currentNode.left;
+
+            }
+            else if (currentNode.right !== null && currentNode.left == null)
+            {
+                console.log(`Found Node ${deleteNumber} with Right Child`);
+                previousNode.left = currentNode.right;
+            }
+
+            // Third case, has two children
+            else if (currentNode.left !== null && currentNode.right !== null)
+            {
+                console.log(`Found Node ${deleteNumber} with Two Children`);
+            }
+        }
+        else if (currentNode.val < deleteNumber)
+        {
+            traverseTreeToDelete(currentNode.right, deleteNumber, currentNode);
+        }
+        else if (currentNode.val > deleteNumber)
+        {
+            traverseTreeToDelete(currentNode.left, deleteNumber, currentNode);
+        }
+        
+    }
+}
+
 
 traverseTreeToInsert(tree.root, 69);
 prettyPrint(tree.root);
-traverseTreeToInsert(tree.root, 362);
+
+traverseTreeToDelete(tree.root, 69);
 prettyPrint(tree.root);
-traverseTreeToInsert(tree.root, 8);
-prettyPrint(tree.root);
-traverseTreeToInsert(tree.root, 2);
-prettyPrint(tree.root);
-traverseTreeToInsert(tree.root, 0);
-prettyPrint(tree.root);
+
