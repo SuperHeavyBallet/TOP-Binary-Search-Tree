@@ -253,6 +253,35 @@ function traverseTreeToDelete(currentNode, deleteNumber, previousNode)
             else if (currentNode.left !== null && currentNode.right !== null)
             {
                 console.log(`Found Node ${deleteNumber} with Two Children`);
+
+                let succParent = currentNode;
+
+                //Find successir
+                let succ = currentNode.right;
+                while (succ.left !== null)
+                {
+                    succParent = succ;
+                    succ = succ.left;
+                }
+                //Delete succesor, since successor is always left child
+                //of its parent we can safely make successor's right
+                //child as left of its parent.
+                // If there is no succ, then asign succ.right to
+                //succParent.right
+                if (succParent !== currentNode)
+                {
+                    succParent.left = succ.right;
+                }
+                else
+                {
+                    succParent.right = succ.right;
+                }
+                //Copy successor Data to root
+                currentNode.val = succ.val;
+                // Delete successor and return root
+                delete succ;
+                return currentNode;
+
             }
         }
         else if (currentNode.val < deleteNumber)
@@ -271,6 +300,6 @@ function traverseTreeToDelete(currentNode, deleteNumber, previousNode)
 traverseTreeToInsert(tree.root, 69);
 prettyPrint(tree.root);
 
-traverseTreeToDelete(tree.root, 69);
+traverseTreeToDelete(tree.root, 1560);
 prettyPrint(tree.root);
 
