@@ -167,8 +167,7 @@ function findNumberInTree(treeToSearch, numberToFind)
         return console.log(`Node with value ${numberToFind} not found in tree.`);
     }
 }
-const numberToFind = 68;
-//findNumberInTree(tree.root, numberToFind);
+
 
 function traverseTreeToInsert(currentNode, insertNumber, previousNode)
 {
@@ -296,10 +295,40 @@ function traverseTreeToDelete(currentNode, deleteNumber, previousNode)
     }
 }
 
+function traverseTreeToFind(currentNode, numberToFind)
+{
+
+    if (currentNode.val === null)
+    {
+        return { node: null, value: `${numberToFind} not found in tree!` };
+    }
+    else
+    {
+        if (currentNode.val < numberToFind)
+        {
+            return traverseTreeToFind(currentNode.right, numberToFind);
+        }
+        else if (currentNode.val > numberToFind)
+        {
+            return traverseTreeToFind(currentNode.left, numberToFind);
+        }
+        else if (currentNode.val === numberToFind)
+        {
+            console.log(`Found Matching Node at: ${currentNode, currentNode.val}`);
+            return { node: currentNode, value: currentNode.val };
+        }
+    }
+
+}
+
 
 traverseTreeToInsert(tree.root, 69);
 prettyPrint(tree.root);
 
-traverseTreeToDelete(tree.root, 1560);
+traverseTreeToDelete(tree.root, 23);
 prettyPrint(tree.root);
+
+const numberToFind = 4;
+const foundNumber = traverseTreeToFind(tree.root, numberToFind);
+console.log(foundNumber);
 
