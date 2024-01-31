@@ -322,6 +322,95 @@ function traverseTreeToFind(currentNode, numberToFind)
 }
 
 
+
+function fibSequence(prevNumber, prevPrevNumber, limitNumber)
+{
+    if (prevNumber > limitNumber)
+    {
+        return;
+    }
+    else if (prevNumber === 0)
+    {
+        console.log(1);
+        fibSequence(currentNumber, prevNumber, limitNumber);
+    }
+    else
+    {
+        let currentNumber = prevNumber + prevPrevNumber;
+        console.log(currentNumber);
+        fibSequence(currentNumber, prevNumber, limitNumber);
+    }
+    
+}
+
+function levelOrderRecursion(root, callback)
+{
+
+    // If supplied root is not present, return an empty array
+    if (!root)
+    {
+        return [];
+    }
+
+    // Initialise result as an empty array, 
+    // and queue as an array with root as element 0 
+    const result = [];
+    const queue = [root];
+
+    // Internal function
+    function traverse()
+    {
+        // if queue's length is 0, for example an empty tree supplied
+        // return
+        if (queue.length === 0)
+        {
+            return;
+        }
+
+        // The current node is the 0 element of the queue array
+        const currentNode = queue.shift();
+
+        // if a callback operation is supplied in arguments
+        // push the result of that callback using the current node
+        // to the end of the result array
+        // else, if no callback is supplied, simply push the value
+        // of the current node to the end of the result array
+
+        /////////////////////////////
+        // Ternery operator version
+        //result.push(callback ? callback(currentNode) : currentNode.val);
+
+        //Explicit if/else Version
+        if (callback)
+        {
+            result.push(callback(currentNode));
+        }
+        else
+        {
+            result.push(currentNode.val);
+        }
+
+        // If the current node has a left or right child, 
+        // add that child to the end of the queue array
+        
+        if (currentNode.left)
+        {
+            queue.push(currentNode.left);
+        }
+        if (currentNode.right)
+        {
+            queue.push(currentNode.right);
+        }
+
+        // Repeat this function with the updated queue array
+        traverse();
+    }
+
+    traverse();
+
+    return result;
+}
+
 traverseTreeToInsert(tree.root, 69);
 prettyPrint(tree.root);
 
@@ -332,3 +421,6 @@ const numberToFind = 4;
 const foundNumber = traverseTreeToFind(tree.root, numberToFind);
 console.log(foundNumber);
 
+
+const traverse = levelOrderRecursion(tree.root);
+console.log(traverse);
