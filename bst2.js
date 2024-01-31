@@ -411,6 +411,123 @@ function levelOrderRecursion(root, callback)
     return result;
 }
 
+function traverseInOrder(root, callback)
+{
+    if (!root)
+    {
+        return [];
+    }
+
+    const result = [];
+    
+    function traverse(currentNode)
+    {
+        if (currentNode.left)
+        {
+            traverse(currentNode.left);
+        }
+
+        if (callback)
+        {
+            result.push(callback(currentNode));
+        }
+        else
+        {
+            result.push(currentNode.val);
+        }
+
+        if (currentNode.right)
+        {
+            traverse(currentNode.right);
+        }
+    }
+
+    traverse(root);
+
+    return result;
+
+
+
+}
+function traversePreOrder(root, callback)
+{
+    if (!root)
+    {
+        return [];
+    }
+
+    const result = [];
+    
+    function traverse(currentNode)
+    {
+        
+
+        if (callback)
+        {
+            result.push(callback(currentNode));
+        }
+        else
+        {
+            result.push(currentNode.val);
+        }
+
+        if (currentNode.left)
+        {
+            traverse(currentNode.left);
+        }
+
+        if (currentNode.right)
+        {
+            traverse(currentNode.right);
+        }
+    }
+
+    traverse(root);
+
+    return result;
+}
+
+function traversePostOrder(root, callback)
+{
+    if (!root)
+    {
+        return [];
+    }
+
+    const result = [];
+    
+    function traverse(currentNode)
+    {
+        
+
+        if (callback)
+        {
+            result.push(callback(currentNode));
+        }
+        else
+        {
+            result.push(currentNode.val);
+        }
+
+       
+        if (currentNode.right)
+        {
+            traverse(currentNode.right);
+        }
+
+        if (currentNode.left)
+        {
+            traverse(currentNode.left);
+        }
+
+    }
+
+    traverse(root);
+
+    return result;
+}
+
+
 traverseTreeToInsert(tree.root, 69);
 prettyPrint(tree.root);
 
@@ -424,3 +541,12 @@ console.log(foundNumber);
 
 const traverse = levelOrderRecursion(tree.root);
 console.log(traverse);
+
+const travInOrder = traverseInOrder(tree.root);
+console.log("In Order: ",travInOrder);
+
+const travPreOrder = traversePreOrder(tree.root);
+console.log("PreOrder: ", travPreOrder);
+
+const travPostOrder = traversePostOrder(tree.root);
+console.log("Post Order: ", travPostOrder);
