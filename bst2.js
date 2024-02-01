@@ -498,7 +498,15 @@ function traversePostOrder(root, callback)
     
     function traverse(currentNode)
     {
-        
+        if (currentNode.left)
+        {
+            traverse(currentNode.left);
+        }
+
+        if (currentNode.right)
+        {
+            traverse(currentNode.right);
+        }
 
         if (callback)
         {
@@ -509,17 +517,6 @@ function traversePostOrder(root, callback)
             result.push(currentNode.val);
         }
 
-       
-        if (currentNode.right)
-        {
-            traverse(currentNode.right);
-        }
-
-        if (currentNode.left)
-        {
-            traverse(currentNode.left);
-        }
-
     }
 
     traverse(root);
@@ -527,26 +524,98 @@ function traversePostOrder(root, callback)
     return result;
 }
 
+function height(node, valueToFind)
+{
 
-traverseTreeToInsert(tree.root, 69);
-prettyPrint(tree.root);
+    let positionOfValueNode;
+    let heightFromValueNode = 0;
+    let furthestLeaf;
+    let possibleHeights = [];
+
+    if (!node)
+    {
+        return;
+    }
+
+
+    function findHeight(currentNode, valueToFind)
+    {
+        if (!currentNode)
+        {
+            return;
+        }
+
+        if (currentNode.val === valueToFind)
+        {
+            positionOfValueNode = currentNode;
+            heightFromValueNode = 0;
+            possibleHeights = [];
+        }
+
+        if (currentNode.left != null || currentNode.right != null)
+        {
+            if (currentNode.left != null)
+            {
+                findHeight(currentNode.left, valueToFind);
+            }
+
+            if (currentNode.right != null)
+            {
+                findHeight(currentNode.right, valueToFind)
+            }
+
+            heightFromValueNode +=1;
+            possibleHeights.push(heightFromValueNode);
+
+        }
+
+        else
+        {
+            heightFromValueNode = 0;
+            possibleHeights.push(heightFromValueNode);
+            furthestLeaf = currentNode;
+        }
+
+    }
+
+    findHeight(node, valueToFind);
+
+    const uniqueHeights = new Set(possibleHeights);
+    console.log("Set" ,uniqueHeights);
+    const endPossibleHeights = Array.from(uniqueHeights);
+    console.log("Arr" , endPossibleHeights);
+    let longestPath = 0;
+
+    for (let i = 0; i < endPossibleHeights.length; i++)
+    {
+        if (endPossibleHeights[i] > longestPath)
+        {
+            longestPath = endPossibleHeights[i];
+        }
+    }
+
+    console.log("Longest Path: ", longestPath);
+}
+
 
 traverseTreeToDelete(tree.root, 23);
 prettyPrint(tree.root);
 
-const numberToFind = 4;
-const foundNumber = traverseTreeToFind(tree.root, numberToFind);
-console.log(foundNumber);
+//const numberToFind = 4;
+//const foundNumber = traverseTreeToFind(tree.root, numberToFind);
+//console.log(foundNumber);
 
 
-const traverse = levelOrderRecursion(tree.root);
-console.log(traverse);
+//const traverse = levelOrderRecursion(tree.root);
+//console.log(traverse);
 
-const travInOrder = traverseInOrder(tree.root);
-console.log("In Order: ",travInOrder);
+//const travInOrder = traverseInOrder(tree.root);
+//console.log("In Order: ",travInOrder);
 
-const travPreOrder = traversePreOrder(tree.root);
-console.log("PreOrder: ", travPreOrder);
+//const travPreOrder = traversePreOrder(tree.root);
+//console.log("PreOrder: ", travPreOrder);
 
-const travPostOrder = traversePostOrder(tree.root);
-console.log("Post Order: ", travPostOrder);
+//const travPostOrder = traversePostOrder(tree.root);
+//console.log("Post Order: ", travPostOrder);
+
+const findHeight = height(tree.root, 54);
