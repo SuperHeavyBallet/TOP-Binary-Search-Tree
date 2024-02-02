@@ -524,78 +524,68 @@ function traversePostOrder(root, callback)
     return result;
 }
 
-function height(node, valueToFind)
+let height = -1;
+
+function findDepth(root, x)
 {
-
-    let positionOfValueNode;
-    let heightFromValueNode = 0;
-    let furthestLeaf;
-    let possibleHeights = [];
-
-    if (!node)
+    if (!root)
     {
-        return;
+        return -1;
     }
 
+    let dist = -1;
 
-    function findHeight(currentNode, valueToFind)
+    // Check if x is the current node
+    if (root.val === x)
     {
-        if (!currentNode)
-        {
-            return;
-        }
-
-        if (currentNode.val === valueToFind)
-        {
-            positionOfValueNode = currentNode;
-            heightFromValueNode = 0;
-            possibleHeights = [];
-        }
-
-        if (currentNode.left != null || currentNode.right != null)
-        {
-            if (currentNode.left != null)
-            {
-                findHeight(currentNode.left, valueToFind);
-            }
-
-            if (currentNode.right != null)
-            {
-                findHeight(currentNode.right, valueToFind)
-            }
-
-            heightFromValueNode +=1;
-            possibleHeights.push(heightFromValueNode);
-
-        }
-
-        else
-        {
-            heightFromValueNode = 0;
-            possibleHeights.push(heightFromValueNode);
-            furthestLeaf = currentNode;
-        }
-
+        console.log("Found the node!");
+        return 0;
     }
-
-    findHeight(node, valueToFind);
-
-    const uniqueHeights = new Set(possibleHeights);
-    console.log("Set" ,uniqueHeights);
-    const endPossibleHeights = Array.from(uniqueHeights);
-    console.log("Arr" , endPossibleHeights);
-    let longestPath = 0;
-
-    for (let i = 0; i < endPossibleHeights.length; i++)
+    
+    const leftDepth = findDepth(root.left, x);
+    if (leftDepth >= 0)
     {
-        if (endPossibleHeights[i] > longestPath)
-        {
-            longestPath = endPossibleHeights[i];
-        }
+        console.log("Found in the left subtree!");
+        return leftDepth +1; // Increment depth when found in the left subtree
     }
-
-    console.log("Longest Path: ", longestPath);
+    
+    const rightDepth = findDepth(root.right, x);
+    if (rightDepth >= 0)
+    {
+        console.log("Found in the right subtree!");
+        return rightDepth +1; // Increment depth when found in the left subtree
+    }
+        
+    //x was not found in the current subtree
+    return -1;
 }
+
+function findHeightUtil(root, x)
+{
+    if (!root)
+    {
+        return -1;
+    }
+
+    //Store the maximum height of
+    // the left and right subtree
+    let leftHeight = findHeightUtil(root.left, x);
+    let rightHeight = findHeightUtil(root.right, x);
+
+    //Update height of the current node
+    let ans = Math.max(leftHeight, rightHeight) +1;
+
+    // If current node is the required node
+    if (root.val === x)
+    {
+        height = ans;
+    }
+
+    return ans;
+
+}
+
+
 
 
 traverseTreeToDelete(tree.root, 23);
@@ -618,4 +608,7 @@ prettyPrint(tree.root);
 //const travPostOrder = traversePostOrder(tree.root);
 //console.log("Post Order: ", travPostOrder);
 
-const findHeight = height(tree.root, 54);
+const numToFind = 4;
+console.log("Num: ", numToFind);
+console.log("Depth: " + findDepth(tree.root, numToFind));
+console.log("Height: " + findHeightUtil(tree.root, numToFind));
