@@ -524,7 +524,7 @@ function traversePostOrder(root, callback)
     return result;
 }
 
-let height = -1;
+
 
 function findDepth(root, x)
 {
@@ -560,6 +560,8 @@ function findDepth(root, x)
     return -1;
 }
 
+let height = -1;
+
 function findHeightUtil(root, x)
 {
     if (!root)
@@ -569,8 +571,11 @@ function findHeightUtil(root, x)
 
     //Store the maximum height of
     // the left and right subtree
-    let leftHeight = findHeightUtil(root.left, x);
-    let rightHeight = findHeightUtil(root.right, x);
+
+        let leftHeight = findHeightUtil(root.left, x);
+
+        let rightHeight = findHeightUtil(root.right, x);
+
 
     //Update height of the current node
     let ans = Math.max(leftHeight, rightHeight) +1;
@@ -583,6 +588,17 @@ function findHeightUtil(root, x)
 
     return ans;
 
+}
+
+function findHeight(root, x)
+{
+    //Stores height of the tree
+    findHeightUtil(root, x);
+
+    //Return the height
+
+
+    return height;
 }
 
 
@@ -608,7 +624,7 @@ prettyPrint(tree.root);
 //const travPostOrder = traversePostOrder(tree.root);
 //console.log("Post Order: ", travPostOrder);
 
-const numToFind = 4;
+const numToFind = 77;
 console.log("Num: ", numToFind);
 console.log("Depth: " + findDepth(tree.root, numToFind));
-console.log("Height: " + findHeightUtil(tree.root, numToFind));
+console.log("Height: " + findHeight(tree.root, numToFind));
