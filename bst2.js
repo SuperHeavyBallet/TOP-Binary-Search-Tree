@@ -601,6 +601,59 @@ function findHeight(root, x)
     return height;
 }
 
+function checkBalance(root)
+{
+    if (!root)
+    {
+        return null;
+    }
+
+    // checking left subtree
+    let leftSubTreeHeight = checkBalance(root.left);
+    if (leftSubTreeHeight == -1)
+    {
+        return -1;
+    }
+    // if left subtree is not balanced then the entire tree is also not balanced
+
+    // checking right subtree
+    let rightSubTreeHeight = checkBalance(root.right);
+    if (rightSubTreeHeight == -1) return -1;
+    // if right subtree is not balanced then the entire tree is also nto balanced
+
+    // checking the difference of left and right subtree for current node
+    if (Math.abs(leftSubTreeHeight - rightSubTreeHeight) > 1)
+    {
+        return -1;
+    }
+
+    // if it is balanced then return the height
+    return (Math.max(leftSubTreeHeight, rightSubTreeHeight) + 1);
+
+}
+
+function judgeBalance(root)
+{
+    if (!root)
+    {
+        return null
+    }
+
+    const result = checkBalance(root);
+
+    if (result > -1)
+    {
+        console.log("Tree is balanced");
+        
+    }
+    else
+    {
+        console.log("Tree is not balanced")
+        
+    }
+    return result;
+}
+
 
 
 
@@ -628,3 +681,5 @@ const numToFind = 77;
 console.log("Num: ", numToFind);
 console.log("Depth: " + findDepth(tree.root, numToFind));
 console.log("Height: " + findHeight(tree.root, numToFind));
+
+console.log("Balance: " , judgeBalance(tree.root));
