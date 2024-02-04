@@ -412,6 +412,35 @@ function levelOrderRecursion(root, callback)
     return result;
 }
 
+function createNewArray(root, array)
+{
+    if (!root)
+    {
+        return [];
+    }
+
+    const result = [];
+
+    function traverse(currentNode)
+    {
+        if (currentNode.left)
+        {
+            traverse(currentNode.left);
+        }
+
+        if (currentNode.right)
+        {
+            traverse(currentNode.right);
+        }
+
+        array.push(currentNode.val);
+    }
+
+    traverse(root);
+
+    return array;
+}
+
 function traverseInOrder(root, callback)
 {
     if (!root)
@@ -793,5 +822,12 @@ traverseTreeToInsert(tree.root, 190);
 prettyPrint(tree.root);
 console.log("Balance: " , judgeBalance(tree.root));
 const newRoot = (reBalanceTree(tree.root));
-console.log(newRoot)
-console.log("Balance: " , judgeBalance(newRoot.root));
+
+
+const newArray = [];
+createNewArray(tree.root, newArray);
+console.log(newArray);
+
+const newTree = new Tree(newArray);
+prettyPrint(newTree.root);
+
