@@ -15,6 +15,7 @@ class Node
         this.val = val;
         this.left = null;
         this.right = null;
+        this.height = 1;
     }
 }
 
@@ -607,7 +608,6 @@ function checkBalance(root)
     {
         return null;
     }
-
     // checking left subtree
     let leftSubTreeHeight = checkBalance(root.left);
     if (leftSubTreeHeight == -1)
@@ -654,6 +654,103 @@ function judgeBalance(root)
     return result;
 }
 
+function reBalanceTree(root)
+{
+    
+        // Helper function to get the height of a node
+        const getHeight = (node) => (node ? node.height : 0);
+
+        // Helper function to update the height of a node based on its children
+        const updateHeight = (node) => {
+            node.height = Math.max(getHeight(node.left), getHeight(node.right)) + 1;
+        };
+
+        //  Helper function to perform a right rotation
+        const rotateRight = (y) => {
+            const x = y.left;
+            const T2 = x.right;
+
+            x.right = y;
+            y.left = T2;
+
+            updateHeight(y);
+            updateHeight(x);
+
+            return x;
+        };
+
+        // Helper function to perform a left rotation
+        const rotateLeft = (x) => {
+            const y = x.right;
+            const T2 = y.left;
+
+            y.left = x;
+            x.right = T2;
+
+            updateHeight(x);
+            updateHeight(y);
+
+            return y;
+        };
+
+        //Helper function to get the balance factor of a node
+        const getBalance = (node) => (node ? getHeight(node.left) - getHeight(node.right) : 0);
+
+
+    // Main function to rebalance the BST
+    const balanceBST = (root) => {
+
+        
+            if (!root)
+            {
+                return null;
+            }
+        
+
+            // Update height of the current node
+            updateHeight(root);
+
+            // Get the balance factor of the current node
+            const balance = getBalance(root);
+
+            // Perform rotations based on the balance factor
+            if (balance > 1)
+            {
+                // Left Heavy
+                if (getBalance(root.left) >= 0)
+                {
+                    // Left - Left Case
+                    return rotateRight(root);
+                }
+                else
+                {
+                    // Left - Right Case
+                    root.left = rotateLeft(root.left);
+                    return rotateRight(root);
+                }
+            }
+            else if (balance < -1)
+            {
+                // Right Heavy
+                if (getBalance(root.right) <= 0)
+                {
+                    // Right - Right Case
+                    return rotateLeft(root);
+                }
+                else
+                {
+                    // Right - Left Case
+                    root.right = rotateRight(root.right);
+                    return rotateLeft(root);
+                }
+            }
+
+            return root /// No Balancing needed
+    };
+
+    balanceBST(root);
+}
+
 
 
 
@@ -678,8 +775,23 @@ prettyPrint(tree.root);
 //console.log("Post Order: ", travPostOrder);
 
 const numToFind = 77;
-console.log("Num: ", numToFind);
-console.log("Depth: " + findDepth(tree.root, numToFind));
-console.log("Height: " + findHeight(tree.root, numToFind));
+//console.log("Num: ", numToFind);
+//console.log("Depth: " + findDepth(tree.root, numToFind));
+//console.log("Height: " + findHeight(tree.root, numToFind));
 
 console.log("Balance: " , judgeBalance(tree.root));
+traverseTreeToInsert(tree.root, 110);
+traverseTreeToInsert(tree.root, 120);
+traverseTreeToInsert(tree.root, 130);
+traverseTreeToInsert(tree.root, 140);
+traverseTreeToInsert(tree.root, 150);
+traverseTreeToInsert(tree.root, 160);
+traverseTreeToInsert(tree.root, 170);
+traverseTreeToInsert(tree.root, 180);
+traverseTreeToInsert(tree.root, 190);
+
+prettyPrint(tree.root);
+console.log("Balance: " , judgeBalance(tree.root));
+const newRoot = (reBalanceTree(tree.root));
+console.log(newRoot)
+console.log("Balance: " , judgeBalance(newRoot.root));
