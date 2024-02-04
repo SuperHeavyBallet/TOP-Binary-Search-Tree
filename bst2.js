@@ -1,13 +1,3 @@
-// HTML Declarations //
-const body = document.getElementById("body");
-const displayText = document.createElement("h1");
-displayText.textContent = "Hello World!";
-body.appendChild(displayText);
-
-
-
-/// INDIVIDUAL NODE CLASS ///
-
 class Node
 {
     constructor(val)
@@ -28,6 +18,19 @@ class Tree{
     }
 }
 
+function createRandomArray(minNumber, maxNumber, size)
+{
+    const newArray = [];
+
+    for (let i = minNumber; i < size; i++)
+    {
+        const newElement = Math.floor(Math.random() * (maxNumber - minNumber) + minNumber);
+        newArray.push(newElement);
+    }
+
+    return newArray;
+}
+
 function sortArray(inputArray)
 {
     const originalArray = inputArray;
@@ -37,9 +40,37 @@ function sortArray(inputArray)
     return sortedUniqueArray;
 }
 
+function createNewArray(root, array)
+{
+    if (!root)
+    {
+        return [];
+    }
+
+    const result = [];
+
+    function traverse(currentNode)
+    {
+        if (currentNode.left)
+        {
+            traverse(currentNode.left);
+        }
+
+        if (currentNode.right)
+        {
+            traverse(currentNode.right);
+        }
+
+        array.push(currentNode.val);
+    }
+
+    traverse(root);
+
+    return array;
+}
+
 function buildTree(inputArray)
 {
-    // If the input array is empty, return null
     if (inputArray.length === 0)
     {
         return null;
@@ -48,10 +79,6 @@ function buildTree(inputArray)
     const mid = Math.floor(inputArray.length / 2);
     const root = new Node(inputArray[mid]);
 
-    // Initialising Queue
-    // q is an array containing arrays at each element
-    // element 0 q[0] contains: root, and an array of 0 and mid -1
-    // element 1 q[1] contains: root, and an array of mid+1 and the length of the input array -1
     const q = [
         [root, [0, mid - 1]],
         [root, [mid + 1, inputArray.length -1]]
@@ -134,33 +161,24 @@ function printBST(root)
     printBST(root.right);
 }
 
-
-    const prettyPrint = (node, prefix = "", isLeft = true) => {
-        if (node === null) {
-          return;
-        }
-        if (node.right !== null) {
-          prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
-        }
-        console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.val}`);
-        if (node.left !== null) {
-          prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
-        }
-      };
+const prettyPrint = (node, prefix = "", isLeft = true) => {
+    if (node === null) {
+        return;
+    }
+    if (node.right !== null) {
+        prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
+    }
+    console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.val}`);
+    if (node.left !== null) {
+        prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
+    }
+};
       
-// Driver program to test the above function
-const unsortedArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 72, 89, 54, 1560, 2, 4, 5];
-const tree = new Tree(unsortedArray);
-//printBST(tree.root);
-prettyPrint(tree.root);
-
-
 function findNumberInTree(treeToSearch, numberToFind)
 {
     const found = traverseTreeToFind(treeToSearch, numberToFind);
     if (found)
     {
-
         return console.log(`Node with value ${numberToFind} found in tree.`);
     }
     else
@@ -168,7 +186,6 @@ function findNumberInTree(treeToSearch, numberToFind)
         return console.log(`Node with value ${numberToFind} not found in tree.`);
     }
 }
-
 
 function traverseTreeToInsert(currentNode, insertNumber, previousNode)
 {
@@ -323,27 +340,6 @@ function traverseTreeToFind(currentNode, numberToFind)
 }
 
 
-
-function fibSequence(prevNumber, prevPrevNumber, limitNumber)
-{
-    if (prevNumber > limitNumber)
-    {
-        return;
-    }
-    else if (prevNumber === 0)
-    {
-        console.log(1);
-        fibSequence(currentNumber, prevNumber, limitNumber);
-    }
-    else
-    {
-        let currentNumber = prevNumber + prevPrevNumber;
-        console.log(currentNumber);
-        fibSequence(currentNumber, prevNumber, limitNumber);
-    }
-    
-}
-
 function levelOrderRecursion(root, callback)
 {
 
@@ -412,35 +408,6 @@ function levelOrderRecursion(root, callback)
     return result;
 }
 
-function createNewArray(root, array)
-{
-    if (!root)
-    {
-        return [];
-    }
-
-    const result = [];
-
-    function traverse(currentNode)
-    {
-        if (currentNode.left)
-        {
-            traverse(currentNode.left);
-        }
-
-        if (currentNode.right)
-        {
-            traverse(currentNode.right);
-        }
-
-        array.push(currentNode.val);
-    }
-
-    traverse(root);
-
-    return array;
-}
-
 function traverseInOrder(root, callback)
 {
     if (!root)
@@ -479,6 +446,7 @@ function traverseInOrder(root, callback)
 
 
 }
+
 function traversePreOrder(root, callback)
 {
     if (!root)
@@ -554,8 +522,7 @@ function traversePostOrder(root, callback)
     return result;
 }
 
-
-
+let height = -1;
 function findDepth(root, x)
 {
     if (!root)
@@ -589,8 +556,6 @@ function findDepth(root, x)
     //x was not found in the current subtree
     return -1;
 }
-
-let height = -1;
 
 function findHeightUtil(root, x)
 {
@@ -683,151 +648,37 @@ function judgeBalance(root)
     return result;
 }
 
-function reBalanceTree(root)
-{
-    
-        // Helper function to get the height of a node
-        const getHeight = (node) => (node ? node.height : 0);
 
-        // Helper function to update the height of a node based on its children
-        const updateHeight = (node) => {
-            node.height = Math.max(getHeight(node.left), getHeight(node.right)) + 1;
-        };
+//// Driver Script
+const unsortedArray = createRandomArray(0, 100, 100);
+console.log(unsortedArray);
 
-        //  Helper function to perform a right rotation
-        const rotateRight = (y) => {
-            const x = y.left;
-            const T2 = x.right;
+const firstTree = new Tree(unsortedArray);
+prettyPrint(firstTree.root);
+judgeBalance(firstTree.root);
 
-            x.right = y;
-            y.left = T2;
+console.log("Pre Order: ", traversePreOrder(firstTree.root));
+console.log("Post Order: ", traversePostOrder(firstTree.root));
+console.log("In Order: ", traverseInOrder(firstTree.root));
 
-            updateHeight(y);
-            updateHeight(x);
+traverseTreeToInsert(firstTree.root, 120);
+traverseTreeToInsert(firstTree.root, 130);
+traverseTreeToInsert(firstTree.root, 140);
+traverseTreeToInsert(firstTree.root, 150);
+traverseTreeToInsert(firstTree.root, 160);
+traverseTreeToInsert(firstTree.root, 170);
+traverseTreeToInsert(firstTree.root, 180);
 
-            return x;
-        };
-
-        // Helper function to perform a left rotation
-        const rotateLeft = (x) => {
-            const y = x.right;
-            const T2 = y.left;
-
-            y.left = x;
-            x.right = T2;
-
-            updateHeight(x);
-            updateHeight(y);
-
-            return y;
-        };
-
-        //Helper function to get the balance factor of a node
-        const getBalance = (node) => (node ? getHeight(node.left) - getHeight(node.right) : 0);
-
-
-    // Main function to rebalance the BST
-    const balanceBST = (root) => {
-
-        
-            if (!root)
-            {
-                return null;
-            }
-        
-
-            // Update height of the current node
-            updateHeight(root);
-
-            // Get the balance factor of the current node
-            const balance = getBalance(root);
-
-            // Perform rotations based on the balance factor
-            if (balance > 1)
-            {
-                // Left Heavy
-                if (getBalance(root.left) >= 0)
-                {
-                    // Left - Left Case
-                    return rotateRight(root);
-                }
-                else
-                {
-                    // Left - Right Case
-                    root.left = rotateLeft(root.left);
-                    return rotateRight(root);
-                }
-            }
-            else if (balance < -1)
-            {
-                // Right Heavy
-                if (getBalance(root.right) <= 0)
-                {
-                    // Right - Right Case
-                    return rotateLeft(root);
-                }
-                else
-                {
-                    // Right - Left Case
-                    root.right = rotateRight(root.right);
-                    return rotateLeft(root);
-                }
-            }
-
-            return root /// No Balancing needed
-    };
-
-    balanceBST(root);
-}
-
-
-
-
-traverseTreeToDelete(tree.root, 23);
-prettyPrint(tree.root);
-
-//const numberToFind = 4;
-//const foundNumber = traverseTreeToFind(tree.root, numberToFind);
-//console.log(foundNumber);
-
-
-//const traverse = levelOrderRecursion(tree.root);
-//console.log(traverse);
-
-//const travInOrder = traverseInOrder(tree.root);
-//console.log("In Order: ",travInOrder);
-
-//const travPreOrder = traversePreOrder(tree.root);
-//console.log("PreOrder: ", travPreOrder);
-
-//const travPostOrder = traversePostOrder(tree.root);
-//console.log("Post Order: ", travPostOrder);
-
-const numToFind = 77;
-//console.log("Num: ", numToFind);
-//console.log("Depth: " + findDepth(tree.root, numToFind));
-//console.log("Height: " + findHeight(tree.root, numToFind));
-
-console.log("Balance: " , judgeBalance(tree.root));
-traverseTreeToInsert(tree.root, 110);
-traverseTreeToInsert(tree.root, 120);
-traverseTreeToInsert(tree.root, 130);
-traverseTreeToInsert(tree.root, 140);
-traverseTreeToInsert(tree.root, 150);
-traverseTreeToInsert(tree.root, 160);
-traverseTreeToInsert(tree.root, 170);
-traverseTreeToInsert(tree.root, 180);
-traverseTreeToInsert(tree.root, 190);
-
-prettyPrint(tree.root);
-console.log("Balance: " , judgeBalance(tree.root));
-const newRoot = (reBalanceTree(tree.root));
-
+prettyPrint(firstTree.root);
+judgeBalance(firstTree.root);
 
 const newArray = [];
-createNewArray(tree.root, newArray);
-console.log(newArray);
+createNewArray(firstTree.root, newArray);
+secondTree = new Tree(newArray);
 
-const newTree = new Tree(newArray);
-prettyPrint(newTree.root);
+prettyPrint(secondTree.root);
+judgeBalance(secondTree.root);
 
+console.log("Pre Order: ", traversePreOrder(firstTree.root));
+console.log("Post Order: ", traversePostOrder(firstTree.root));
+console.log("In Order: ", traverseInOrder(firstTree.root));
